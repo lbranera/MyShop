@@ -1,0 +1,41 @@
+{% extends 'products/main.html' %}
+
+{% block content %}
+
+<section class="text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-8 mx-auto">
+        <h1 class="fw-light">Our Books</h1>
+        <p class="lead text-muted">For all of the bibliophiles out there, check out our rare and new collection of Filipiniana books and other 
+        collections under Anthropology, History, Journalism, Literature, Philosophy, Political Science, Psychology, and Sociology!</p>
+      </div>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for book in books %}
+                <div class="col">
+                    <div class="card shadow">
+                    
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'book' book.id %}" style="text-decoration:none; color: black;">{{book.title}}</a></h5>
+                        <p class="card-text">{{book.description}}</p>
+                        <p class="card-text">By {{book.author}}</p>
+                        <p class="card-text">Price: Php {{book.price}}</p>
+                        <button type="button" class="btn btn-outline-dark"> <i class="fas fa-cart-plus"></i> Add to Cart</button>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Product added on {{book.date_created}}</small>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+  
+{% endblock content %}
