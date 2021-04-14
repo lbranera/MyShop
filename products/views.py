@@ -1,7 +1,7 @@
 import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from products.models import *
 from products.forms import *
 
@@ -37,12 +37,29 @@ def register(request):
             new_object = form.save(commit=False)
             new_object.password = make_password(form.cleaned_data['password'])
             new_object.save()
-
-            form.save()
             return redirect('/')
 
     data = {"form": form}
     return render(request, 'products/register.html', data)
 
 def login(request):
+    if( request.method == "POST"):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+            if ( check_password(password, user.password) ):
+                print("Login success.")
+                
+            return redirect('/')
+
+        except User.DoesNotExist:
+            return redirect('login')
+
     return render(request, 'products/login.html')
+
+
+def logout(request):
+
+    return redirect('login')
