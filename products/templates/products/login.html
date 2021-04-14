@@ -2,34 +2,53 @@
 
 {% block content %}
 
-<br><br>
+<section class="text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-8 mx-auto">
+        <h1 class="fw-light">Welcome to MyShop!</h1>
+        <p class="lead text-muted">For all of the bibliophiles out there, check out our rare and new collection of Filipiniana books and other 
+        collections under Anthropology, History, Journalism, Literature, Philosophy, Political Science, Psychology, and Sociology!</p>
+      </div>
+    </div>
+</section>
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-8"></div>
-        <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card shadow">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="card text-center shadow">
+                <div class="card-header">
+                    Welcome! Please login
+                </div>
                 <div class="card-body m-4">
                     <form>
-                        <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Username</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
                         </div>
-                        <div class="mb-3">
-                          <label for="exampleInputPassword1" class="form-label">Password</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Password</label>
                         </div>
+                        <br> 
                         <center>
-                            <button type="button" class="btn btn-outline-dark btn-md">Log-in</button>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-dark btn-md">Log-in</button>
+                        </div>
                         </center>
                     </form>
+
+                    <br><br>
+                    New to MyShop? Register <a href="{% url 'register'  %}" style="text-decoration: none;">here</a>.
                 </div>
             </div>
         </div>
+        <div class="col-sm-4"></div>
     </div>
 </div>
-<br>
 
+<br>
+<br>
 
 {% endblock content %}

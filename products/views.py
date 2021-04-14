@@ -21,7 +21,7 @@ def book(request,pk):
     
         overall_rating = overall_rating/len(comments)
 
-        data = {'book': book, 'with_comments': True, 'comments':comments, 'overall_rating': overall_rating, "rating_floor": math.floor(overall_rating), 'rating_float': not overall_rating.is_integer()}
+        data = {'book': book, 'with_comments': True, 'comments':comments, 'overall_rating': round(overall_rating,2), "rating_floor": math.floor(overall_rating), 'rating_float': not overall_rating.is_integer()}
     
     else: 
 
