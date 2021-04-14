@@ -51,27 +51,27 @@
             <tbody>
               <tr>
                 <td><strong>Weight</strong> </td>
-                <td>0.135 kg</td>
+                <td>{{book.weight}} kg</td>
               </tr>
               <tr>
                 <td><strong>Dimensions</strong></td>
-                <td>8 × 5.12 in</td>
+                <td>{{book.dimensions}}</td>
               </tr>
               <tr>
                 <td><strong>Edition</strong> </td>
-                <td>Newsprint</td>
+                <td>{{book.edition}}</td>
               </tr>
               <tr>
                 <td><strong>Language</strong> </td>
-                <td>English</td>
+                <td>{{book.language}}</td>
               </tr>
               <tr>
                 <td><strong>Pages</strong> </td>
-                <td>176</td>
+                <td>{{book.pages}}</td>
               </tr>
               <tr>
                 <td><strong>Subtitle</strong> </td>
-                <td>A Medley of Factual Romance, Happy or Tragical, Most of Which Made News</td>
+                <td>{{book.subtitle}}</td>
               </tr>
             </tbody>
           </table>
@@ -84,6 +84,8 @@
 </div>
 
 <br>
+
+{% if with_comments %}
 <div class="container-fluid bg-light">
   <br>
   <div class="container">
@@ -92,21 +94,57 @@
         Ratings and Reviews on "{{book.title}}"
       </div>
       <div class="card-body">
-        <h1 class="card-title">5/5</h1>
+        <h1 class="card-title">{{overall_rating}}/5</h1>
         
+        {% with ''|center:rating_floor as range %}
+        {% for _ in range %}
+        <i class="fas fa-star"></i>
+        {% endfor %}
+        {% endwith %}
 
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-
+        {% if rating_float %}
+        <i class="fas fa-star-half"></i>
+        {% endif %}
         <p class="card-text">Out of five ratings.</p>
       </div>
     </div>
   </div>
+
+  <br><br>
+
+  <div class="container">
+
+    <h3>Comments</h3>
+    <br>
+
+    {% for comment in comments %}
+    <div class="card">
+      <div class="card-header">
+
+        {% with ''|center:comment.rating as range %}
+        {% for _ in range %}
+        <i class="fas fa-star"></i>
+        {% endfor %}
+        {% endwith %}
+
+        <br>
+
+        <strong>{{comment.user}}</strong> • {{comment.date_created}}
+        
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{comment.comment}}</p>
+      </div>
+    </div>
+    <br>
+    {% endfor %}
+
+  </div>
+
   <br>
+  
 </div>
+{% endif %}
 
 
 

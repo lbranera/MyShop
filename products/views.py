@@ -1,6 +1,7 @@
+import math
 from django.shortcuts import render
 from django.http import HttpResponse
-from products.models import Book
+from products.models import *
 # Create your views here.
 
 def home(request):
@@ -10,7 +11,22 @@ def home(request):
 
 def book(request,pk):
     book = Book.objects.get(id=pk)
-    data = {'book': book}
+    comments = book.comment_set.all()
+
+    if ( len(comments) != 0 ):
+
+        overall_rating = 0
+        for comment in comments:
+            overall_rating += comment.rating 
+    
+        overall_rating = overall_rating/len(comments)
+
+        data = {'book': book, 'with_comments': True, 'comments':comments, 'overall_rating': overall_rating, "rating_floor": math.floor(overall_rating), 'rating_float': not overall_rating.is_integer()}
+    
+    else: 
+
+        data = {'book': book, 'with_comments': False} 
+
     return render(request, 'products/book.html', data)
 
 
