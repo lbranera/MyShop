@@ -42,7 +42,7 @@
         {% else %}
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link">{{request.user}}</a>
+              <a class="nav-link" role="button" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">{{request.user}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.view_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}"> Logout </a>
@@ -50,7 +50,16 @@
           </ul>
         {% endif %}
 
-        
       </div>
     </div>
-  </nav>
+</nav>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header">
+    <p class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Hello, <strong>{{request.user.first_name}} {{request.user.last_name}}</strong></p>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+
+  </div>
+</div>
