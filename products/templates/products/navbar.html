@@ -29,14 +29,28 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li> -->
         </ul>
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.view_name == 'register' %}active{% endif %}" href="{% url 'register'  %}">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Log-in</a>
-          </li>
-        </ul>
+
+        {% if not request.user.is_authenticated %}
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'register' %}active{% endif %}" href="{% url 'register'  %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Login</a>
+            </li>
+          </ul>
+        {% else %}
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link">{{request.user}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}"> Logout </a>
+            </li>
+          </ul>
+        {% endif %}
+
+        
       </div>
     </div>
   </nav>

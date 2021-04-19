@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
@@ -19,6 +20,7 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+'''
 class User(models.Model):
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
@@ -29,9 +31,10 @@ class User(models.Model):
 
     def __str__(self):
         return self.first_name+" "+self.last_name
+'''
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     comment = models.CharField(max_length=100, null=True)
     rating = models.IntegerField(

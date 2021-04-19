@@ -2,6 +2,7 @@ import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate, login, logout
 from products.models import *
 from products.forms import *
 
@@ -31,6 +32,7 @@ def book(request,pk):
 def register(request):
     form = UserForm()
 
+    '''
     if( request.method == "POST"):
         form = UserForm(request.POST)
         if( form.is_valid() ):
@@ -38,15 +40,32 @@ def register(request):
             new_object.password = make_password(form.cleaned_data['password'])
             new_object.save()
             return redirect('/')
+    '''
+
+    if( request.method == "POST"):
+        form = UserForm(request.POST)
+        if( form.is_valid() ):
+            form.save()
+            return redirect('/login')
 
     data = {"form": form}
     return render(request, 'products/register.html', data)
 
-def login(request):
+def login_page(request):
     if( request.method == "POST"):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            print("Login Success.")
+            return redirect('/')
+        else:
+            print("Login Fail.")
+
+        '''
         try:
             user = User.objects.get(username=username)
             if ( check_password(password, user.password) ):
@@ -56,10 +75,11 @@ def login(request):
 
         except User.DoesNotExist:
             return redirect('login')
+        '''
 
     return render(request, 'products/login.html')
 
 
-def logout(request):
-
+def logout_page(request):
+    logout(request)
     return redirect('login')

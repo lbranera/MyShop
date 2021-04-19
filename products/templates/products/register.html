@@ -24,7 +24,7 @@
                 <div class="card-body m-4">
                     <form action="" method="post">
                         {% csrf_token %}
-                       
+                        
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-floating mb-3">
@@ -58,11 +58,17 @@
                         </div>
 
                         <br>
+        
+                        <div class="form-floating mb-3">
+                            {{form.password1}}
+                            <label for="floatingInput">Enter Password</label>
+                        </div> 
 
                         <div class="form-floating mb-3">
-                            {{form.password}}
-                            <label for="floatingInput">Enter Password</label>
-                        </div>
+                            {{form.password2}}
+                            <label for="floatingInput">Confirm Password</label>
+                        </div> 
+
                         
                         <br>
                         <center>
