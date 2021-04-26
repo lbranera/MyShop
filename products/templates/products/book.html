@@ -1,182 +1,198 @@
 {% extends 'products/main.html' %}
 
 {% block content %}
-
 <br><br>
+<!-- Book Details Page -->
 <div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card text-center shadow">
-        <div class="card-header">
-          Featured Book
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">{{book.title}}</h5>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card text-center shadow">
+				<div class="card-header">
+				Featured Book
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">{{book.title}}</h5>
 
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="45%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                
-                <br><br>
-                <p class="card-text"> 
-                    <strong>Author:</strong> {{book.author}} <br> 
-                    <strong>Price:</strong> Php {{book.price}} <br>
-                    {% if book.is_available %}
-                      <strong class="text-success">AVAILABLE</strong>
-                    {% else %}
-                      <strong class="text-danger">NOT AVAILABLE</strong>
-                    {% endif %}
-                </p> 
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="45%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						
+						<br><br>
+						<p class="card-text"> 
+							<strong>Author:</strong> {{book.author}} <br> 
+							<strong>Price:</strong> Php {{book.price}} <br>
+							{% if book.is_available %}
+							<strong class="text-success">AVAILABLE</strong>
+							{% else %}
+							<strong class="text-danger">NOT AVAILABLE</strong>
+							{% endif %}
+						</p> 
 
-                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
-                  <i class="fas fa-cart-plus"></i> 
-                  Add to Cart
-                </button>
-                    
-        </div>
-        <div class="card-footer text-muted">
-          Product added on {{book.date_created}}
-        </div>
-      </div>
-    </div>
+						{% if request.user.is_authenticated %}
+						<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
+							<i class="fas fa-cart-plus"></i> 
+							Add to Cart
+						</button>
+						{% else %}
+						<a href="{% url 'login' %}" type="button" class="btn btn-outline-dark"> 
+							<i class="fas fa-cart-plus"></i> 
+							Add to Cart
+						</a>
+						{% endif %}
+				</div>
+				<div class="card-footer text-muted">
+				Product added on {{book.date_created}}
+				</div>
+			</div>
+		</div>
 
-    <div class="col-sm-6">
-      <div class="card shadow">
-        <div class="card-header">
-          About the Book
-        </div>
-        <div class="card-body">
-          {{book.description}}
-        </div>
-      </div>
+		<div class="col-sm-6">
+			<div class="card shadow">
+				<div class="card-header">
+				About the Book
+				</div>
+				<div class="card-body">
+				{{book.description}}
+				</div>
+			</div>
 
-      <br>
+			<br>
 
-      <div class="card shadow">
-        <div class="card-header">
-          Book Details
-        </div>
-        <div class="card-body">
-          <table class="table table-striped  table-hover">
-            <tbody>
-              <tr>
-                <td><strong>Weight</strong> </td>
-                <td>{{book.weight}} kg</td>
-              </tr>
-              <tr>
-                <td><strong>Dimensions</strong></td>
-                <td>{{book.dimensions}}</td>
-              </tr>
-              <tr>
-                <td><strong>Edition</strong> </td>
-                <td>{{book.edition}}</td>
-              </tr>
-              <tr>
-                <td><strong>Language</strong> </td>
-                <td>{{book.language}}</td>
-              </tr>
-              <tr>
-                <td><strong>Pages</strong> </td>
-                <td>{{book.pages}}</td>
-              </tr>
-              <tr>
-                <td><strong>Subtitle</strong> </td>
-                <td>{{book.subtitle}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-   
-  </div>  
+			<div class="card shadow">
+				<div class="card-header">
+				Book Details
+				</div>
+				<div class="card-body">
+					<table class="table table-striped  table-hover">
+						<tbody>
+							<tr>
+								<td><strong>Weight</strong> </td>
+								<td>{{book.weight}} kg</td>
+							</tr>
+							<tr>
+								<td><strong>Dimensions</strong></td>
+								<td>{{book.dimensions}}</td>
+							</tr>
+							<tr>
+								<td><strong>Edition</strong> </td>
+								<td>{{book.edition}}</td>
+							</tr>
+							<tr>
+								<td><strong>Language</strong> </td>
+								<td>{{book.language}}</td>
+							</tr>
+							<tr>
+								<td><strong>Pages</strong> </td>
+								<td>{{book.pages}}</td>
+							</tr>
+							<tr>
+								<td><strong>Subtitle</strong> </td>
+								<td>{{book.subtitle}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>  
 </div>
 
 <br>
 
-{% if with_comments %}
+<!-- Comment Section -->
+{% if comments is not None %}
 <div class="container-fluid bg-light">
-  <br>
-  <div class="container">
-    <div class="card shadow">
-      <div class="card-header">
-        Ratings and Reviews on "{{book.title}}"
-      </div>
-      <div class="card-body">
-        <h1 class="card-title">{{overall_rating}}/5.0</h1>
-        
-        {% with ''|center:rating_floor as range %}
-        {% for _ in range %}
-        <i class="fas fa-star"></i>
-        {% endfor %}
-        {% endwith %}
+  	<br>
+  	<div class="container">
+		<div class="card shadow">
+			<div class="card-header">
+				Ratings and Reviews on "{{book.title}}"
+			</div>
+			<div class="card-body">
+				<h1 class="card-title">{{overall_rating}}/5.0</h1>
+				
+				{% with ''|center:rating_floor as range %}
+				{% for _ in range %}
+					<i class="fas fa-star"></i>
+				{% endfor %}
+				{% endwith %}
 
-        {% if rating_float %}
-        <i class="fas fa-star-half"></i>
-        {% endif %}
-        <p class="card-text">Out of five ratings.</p>
-      </div>
-    </div>
-  </div>
+				{% if rating_float %}
+					<i class="fas fa-star-half"></i>
+				{% endif %}
+				<p class="card-text">Out of five ratings.</p>
+			</div>
+		</div>
+  	</div>
 
-  <br><br>
+  	<br><br>
 
-  <div class="container">
-    <hr>
-    <h3>Comments</h3>
-    <br>
+  	<div class="container">
+		<hr>
+		<h3>Comments</h3>
+		<br>
 
-    {% for comment in comments %}
-    <div class="card shadow">
-      <div class="card-header">
+    	{% for comment in comments %}
+			<div class="card shadow">
+				<div class="card-header">
 
-        {% with ''|center:comment.rating as range %}
-        {% for _ in range %}
-        <i class="fas fa-star"></i>
-        {% endfor %}
-        {% endwith %}
+					{% with ''|center:comment.rating as range %}
+					{% for _ in range %}
+						<i class="fas fa-star"></i>
+					{% endfor %}
+					{% endwith %}
 
-        <br>
-        <strong>{{comment.user}}</strong> • {{comment.date_created}}
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{comment.comment}}</p>
-      </div>
-    </div>
-    <br>
-    {% endfor %}
-
-  </div>
-
-  <br>
-  
+					<br>
+					<strong>{{comment.user}}</strong> • {{comment.date_created}}
+				</div>
+				<div class="card-body">
+					<p class="card-text">{{comment.comment}}</p>
+				</div>
+			</div>
+			<br>
+    	{% endfor %}
+  	</div>
+  	<br>
 </div>
 {% endif %}
 
 <!-- Book Confirmation Modal -->
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Book Confirmation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-start">
-        Hello, {{request.user}}! Are you sure you want to add <strong>{{book.title}}</strong> in your cart?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
-          <i class="fas fa-cart-plus"></i> 
-          Add to Cart
-        </button>
+  	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<form action="" method="post">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Book Confirmation</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-start">
+				Hello, {{request.user}}! Are you sure you want to add <strong>{{book.title}}</strong> in your cart?
+				{% csrf_token %}
+				{{form.user}}
+				{{form.book}}
 
-        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
-          <i class="fas fa-ban"></i> 
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
+				<br><br>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-4 text-center">Quantity:</div>
+					<div class="col-sm-4">{{form.quantity}}</div>
+					<div class="col-sm-2"></div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+					<i class="fas fa-cart-plus"></i> 
+					Add to Cart
+				</button>
+		
+				<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+					<i class="fas fa-ban"></i> 
+					Cancel
+				</button>
+			</div>
+			</form>
+		</div>
+  	</div>
 </div>
-
 
 {% endblock content %}

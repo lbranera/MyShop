@@ -17,16 +17,25 @@ def home(request):
 def book(request,pk):
     book = Book.objects.get(id=pk)
     comments = book.comment_set.all()
-
+ 
     if ( len(comments) != 0 ):
         overall_rating = 0
         for comment in comments:
             overall_rating += comment.rating 
         overall_rating = overall_rating/len(comments)
-        data = {'book': book, 'with_comments': True, 'comments':comments, 'overall_rating': round(overall_rating,2), "rating_floor": math.floor(overall_rating), 'rating_float': not overall_rating.is_integer()}
+        data = {'book': book, 'comments':comments, 'overall_rating': round(overall_rating,2), "rating_floor": math.floor(overall_rating), 'rating_float': not overall_rating.is_integer()}
     else: 
-        data = {'book': book, 'with_comments': False} 
+        data = {'book': book } 
+    
+    form = ShoppingCartForm({"user": request.user.id, "book": book.id, "quantity": 1})
+    data["form"] = form
 
+    if( request.method == "POST"):
+        form = ShoppingCartForm(request.POST)
+        if( form.is_valid() ):
+            form.save()
+            return redirect("/")
+            
     return render(request, 'products/book.html', data)
 
 

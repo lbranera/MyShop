@@ -50,4 +50,11 @@ class Comment(models.Model):
 class ShoppingCart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.IntegerField(
+        null=True,
+        validators=[
+            MinValueValidator(1)
+        ]
+    )
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+    

@@ -33,19 +33,34 @@
         {% if not request.user.is_authenticated %}
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.view_name == 'register' %}active{% endif %}" href="{% url 'register'  %}">Register</a>
+              <a class="nav-link {% if request.resolver_match.view_name == 'register' %}active{% endif %}" href="{% url 'register'  %}">
+                <i class="fas fa-user-plus"></i> Register
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Login</a>
+              <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </a>
             </li>
           </ul>
         {% else %}
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" role="button" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">{{request.user}}</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{request.user}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">My Shopping Cart</a></li>
+                <li><a class="dropdown-item" href="#">My Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.view_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}"> Logout </a>
+              <a class="nav-link {% if request.resolver_match.view_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}"> 
+                <i class="fas fa-sign-out-alt"></i> Logout 
+              </a>
             </li>
           </ul>
         {% endif %}
@@ -54,15 +69,3 @@
     </div>
 </nav>
 
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-  <div class="offcanvas-header">
-    <p class="offcanvas-title" id="offcanvasWithBothOptionsLabel" >Hello, <strong>{{request.user.first_name}} {{request.user.last_name}}</strong></p>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <nav class="nav flex-column">
-      <a class="nav-link text-dark" href="#">My Cart</a>
-      <a class="nav-link text-dark" href="#">Settings</a>
-    </nav>
-  </div>
-</div>
