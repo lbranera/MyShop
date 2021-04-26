@@ -1,0 +1,138 @@
+{% extends 'products/main.html' %}
+
+{% block content %}
+<section class="text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-8 mx-auto">
+        <h1 class="fw-light">My Shopping Cart</h1>
+        <p class="lead text-muted">For all of the bibliophiles out there, check out our rare and new collection of Filipiniana books and other 
+        collections under Anthropology, History, Journalism, Literature, Philosophy, Political Science, Psychology, and Sociology!</p>
+      </div>
+    </div>
+</section>
+
+
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Book Author</th>
+                <th>Book Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Date Added</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cart %}
+            <tr>
+                <td>{{c.item.book.title}}</td>
+                <td>{{c.item.book.author}}</td>
+                <td>Php {{c.item.book.price}}</td>
+                <td>{{c.item.quantity}}</td>
+                <td>Php {% widthratio  c.item.book.price 1 c.item.quantity %}</td>
+                <td>{{c.item.date_created}}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#edit_{{c.item.id}}">
+                        <i class="fas fa-edit"></i> Edit Quantity
+                    </button>
+
+                    <!-- Edit Quantity Modal -->
+                    <div class="modal fade" id="edit_{{c.item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="{% url 'update_cart' c.item.id %}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Quantity Form</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                {% csrf_token %}
+                                {{c.form.user}}
+                                {{c.form.book}}
+
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4 text-center">Change Quantity:</div>
+                                    <div class="col-sm-4">{{c.form.quantity}}</div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-success"> 
+                                    <i class="fas fa-edit"></i> 
+                                    Edit
+                                </button>
+                        
+                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                                    <i class="fas fa-ban"></i> 
+                                    Cancel
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#delete_{{c.item.id}}">
+                        <i class="fas fa-minus-circle"></i> Remove to Cart
+                    </button>
+
+                    <!-- Delete Item Modal -->
+                    <div class="modal fade" id="delete_{{c.item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Remove to Cart Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                Are you sure you want to remove "{{c.item.book}}"?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'delete_cart' c.item.id %}" type="button" class="btn btn-outline-success"> 
+                                    <i class="fas fa-minus-circle"></i> 
+                                    Remove Item
+                                </a>
+                        
+                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                                    <i class="fas fa-ban"></i> 
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% if cum_price == 0 %}
+                <tr>
+                    <td class="text-center" colspan="9">You cart is empty. Look for <a href="{% url 'home' %}" style="text-decoration: none;">books</a>!</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9"></td>
+                </tr>
+            
+                <tr>
+                    <td colspan="3"></td>
+                    <th>Cumulative Price</th>
+                    <td>Php {{cum_price}}</td>
+                    <td colspan="3"></td>
+                </tr>
+            {% endif %}
+
+        </tbody>
+    </table>
+</div>
+
+<br><br>
+{% endblock content %}

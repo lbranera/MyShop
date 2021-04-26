@@ -11,7 +11,13 @@ from products.forms import *
 
 def home(request):
     books = Book.objects.all()
-    data = {'books': books}
+    items = []
+
+    for book in books:
+        form = ShoppingCartForm({"user": request.user.id, "book": book.id, "quantity": 1})
+        items.append({"book": book, "form": form})
+
+    data = {"items": items}
     return render(request, 'products/home.html', data)
 
 def book(request,pk):
@@ -28,16 +34,40 @@ def book(request,pk):
         data = {'book': book } 
     
     form = ShoppingCartForm({"user": request.user.id, "book": book.id, "quantity": 1})
-    data["form"] = form
-
-    if( request.method == "POST"):
-        form = ShoppingCartForm(request.POST)
-        if( form.is_valid() ):
-            form.save()
-            return redirect("/")
-            
+    data["form"] = form            
     return render(request, 'products/book.html', data)
 
+def cart(request):
+    items = ShoppingCart.objects.filter(user=request.user)
+    cart = []
+    cum_price = 0
+    
+    for item in items:
+        cum_price = cum_price + (item.quantity * item.book.price)
+        form = ShoppingCartForm({"user": item.user.id, "book": item.book.id, "quantity": item.quantity})
+        cart.append({"item":item, "form": form})
+
+    data = {"cart": cart, "cum_price": cum_price}
+    return render(request, 'products/cart.html', data)
+
+def add_cart(request):
+    form = ShoppingCartForm(request.POST)
+    if( form.is_valid() ):
+        form.save()
+        return redirect("/cart")
+
+def update_cart(request, pk):
+    single_cart = ShoppingCart.objects.get(id=pk)
+    form = ShoppingCartForm(request.POST, instance=single_cart)
+    if ( form.is_valid() ):
+        form.save()
+    
+    return redirect("/cart")
+
+def delete_cart(request, pk):
+    single_cart = ShoppingCart.objects.get(id=pk)
+    single_cart.delete()
+    return redirect("/cart")
 
 def register(request):
     form = UserForm()
