@@ -4,20 +4,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 from products.models import * 
 
-'''
-class UserForm(ModelForm):
-    class Meta: 
-        model = User
-        fields = "__all__"
-        widgets = { 
-            'first_name': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
-            'last_name': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
-            'username': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
-            'email': TextInput( attrs={ 'type':'email', 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
-            'password': PasswordInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } )
-        }
-'''
-
 class UserForm(UserCreationForm):
     attrs = { 'class': 'form-control', 'id':'floatingInput', 'placeholder':'Enter Password' , 'required': True, } 
     password1 =  CharField( widget=PasswordInput(attrs=attrs) )
@@ -42,3 +28,17 @@ class ShoppingCartForm(ModelForm):
             'book':  HiddenInput( attrs = {'type':'hidden'} ),
             'quantity': NumberInput ( attrs = {'class':'form-control', 'min':'1'} ),
         }
+
+'''
+class UserForm(ModelForm):
+    class Meta: 
+        model = User
+        fields = "__all__"
+        widgets = { 
+            'first_name': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
+            'last_name': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
+            'username': TextInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
+            'email': TextInput( attrs={ 'type':'email', 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } ),
+            'password': PasswordInput( attrs={ 'class': 'form-control', 'id':'floatingInput', 'placeholder':'name@example.com' , 'required': True, } )
+        }
+'''

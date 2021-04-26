@@ -2,12 +2,13 @@ import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login, logout
 from products.models import *
 from products.forms import *
 
 # Create your views here.
+
+# BOOK RELATED CONTROLLERS
 
 def home(request):
     books = Book.objects.all()
@@ -36,6 +37,8 @@ def book(request,pk):
     form = ShoppingCartForm({"user": request.user.id, "book": book.id, "quantity": 1})
     data["form"] = form            
     return render(request, 'products/book.html', data)
+
+# CART RELATED CONTROLLERS
 
 def cart(request):
     items = ShoppingCart.objects.filter(user=request.user)
@@ -69,18 +72,10 @@ def remove_cart(request, pk):
     single_cart.delete()
     return redirect("/cart")
 
+# USER AUTHENTICATION RELATED CONTROLLERS
+
 def register(request):
     form = UserForm()
-
-    '''
-    if( request.method == "POST"):
-        form = UserForm(request.POST)
-        if( form.is_valid() ):
-            new_object = form.save(commit=False)
-            new_object.password = make_password(form.cleaned_data['password'])
-            new_object.save()
-            return redirect('/')
-    '''
 
     if( request.method == "POST"):
         form = UserForm(request.POST)
@@ -106,18 +101,6 @@ def login_page(request):
         else:
             print("Login Fail.")
             messages.error(request, "Incorrect password or username.")
-
-        '''
-        try:
-            user = User.objects.get(username=username)
-            if ( check_password(password, user.password) ):
-                print("Login success.")
-                
-            return redirect('/')
-
-        except User.DoesNotExist:
-            return redirect('login')
-        '''
 
     return render(request, 'products/login.html')
 
