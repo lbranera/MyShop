@@ -64,7 +64,7 @@ def update_cart(request, pk):
     
     return redirect("/cart")
 
-def delete_cart(request, pk):
+def remove_cart(request, pk):
     single_cart = ShoppingCart.objects.get(id=pk)
     single_cart.delete()
     return redirect("/cart")
