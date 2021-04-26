@@ -32,7 +32,24 @@
                             <input type="password"  name="password" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">Enter Password</label>
                         </div>
+                        
                         <br> 
+                        {% for message in messages %}
+                            {% if 'success' == message.tags %}
+                                <!-- Alert Box -->
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> {{message | striptags}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% else %}
+                                <!-- Alert Box -->
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> {{message | striptags}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
                         <center>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-dark btn-md">Log-in</button>
@@ -40,7 +57,7 @@
                         </center>
                     </form>
 
-                    <br><br>
+                    <br>
                     New to MyShop? Register <a href="{% url 'register'  %}" style="text-decoration: none;">here</a>.
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login, logout
 from products.models import *
@@ -46,6 +47,7 @@ def register(request):
         form = UserForm(request.POST)
         if( form.is_valid() ):
             form.save()
+            messages.success(request, "Account was created for "+form.cleaned_data.get("username"))
             return redirect('/login')
 
     data = {"form": form}
@@ -64,6 +66,7 @@ def login_page(request):
             return redirect('/')
         else:
             print("Login Fail.")
+            messages.error(request, "Incorrect password or username.")
 
         '''
         try:

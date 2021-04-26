@@ -69,8 +69,17 @@
                             <label for="floatingInput">Confirm Password</label>
                         </div> 
 
-                        
                         <br>
+                        {% if form.errors %}
+                            {% for key, value in form.errors.items %}
+                            <!-- Alert -->
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{value | striptags}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
                         <center>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-dark btn-md">Register</button>
@@ -78,16 +87,19 @@
                         </center> 
                     </form>
 
-                    <br><br>
+                    <br>
                     Have an account? <a href="{% url 'login'  %}" style="text-decoration: none;">Login</a>.
                 </div>
             </div>
         </div>
         <div class="col-md-2 col-lg-3"></div>
     </div>
+
 </div>
 
 <br>
 <br>
+
+
 
 {% endblock content %}
