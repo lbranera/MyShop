@@ -19,10 +19,18 @@
                 <p class="card-text"> 
                     <strong>Author:</strong> {{book.author}} <br> 
                     <strong>Price:</strong> Php {{book.price}} <br>
-                    <strong class="text-success">AVAILABLE</strong>
+                    {% if book.is_available %}
+                      <strong class="text-success">AVAILABLE</strong>
+                    {% else %}
+                      <strong class="text-danger">NOT AVAILABLE</strong>
+                    {% endif %}
                 </p> 
 
-                <button type="button" class="btn btn-outline-dark"> <i class="fas fa-cart-plus"></i> Add to Cart</button>
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
+                  <i class="fas fa-cart-plus"></i> 
+                  Add to Cart
+                </button>
+                    
         </div>
         <div class="card-footer text-muted">
           Product added on {{book.date_created}}
@@ -144,6 +152,31 @@
 </div>
 {% endif %}
 
+<!-- Book Confirmation Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Book Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-start">
+        Hello, {{request.user}}! Are you sure you want to add <strong>{{book.title}}</strong> in your cart?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
+          <i class="fas fa-cart-plus"></i> 
+          Add to Cart
+        </button>
+
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+          <i class="fas fa-ban"></i> 
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock content %}

@@ -15,6 +15,7 @@ class Book(models.Model):
     language = models.CharField(max_length=50, null=True)
     pages = models.IntegerField(null=True)
     subtitle = models.CharField(max_length=500, null=True)
+    is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -46,3 +47,7 @@ class Comment(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
