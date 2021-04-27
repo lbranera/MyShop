@@ -117,21 +117,50 @@
                 <tr>
                     <td class="text-center" colspan="9">You cart is empty. Look for <a href="{% url 'home' %}" style="text-decoration: none;">books</a>!</td>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="9"></td>
-                </tr>
-            
-                <tr>
-                    <td colspan="3"></td>
-                    <th>Cumulative Price</th>
-                    <td>Php {{cum_price}}</td>
-                    <td colspan="3"></td>
-                </tr>
             {% endif %}
-
+        
         </tbody>
     </table>
+
+    <br>
+    <br>
+
+    {% if cum_price != 0 %}
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-center">Shopping Summary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Number of Items</td>
+                            <td>{{book_count}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cumulative Price</td>
+                            <td>Php {{cum_price}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a href="#" type="button" class="btn btn-outline-dark">
+                                    <i class="fas fa-check-circle"></i>
+                                    Checkout
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+       
+    {% endif %}
+
 </div>
 
 <br><br>

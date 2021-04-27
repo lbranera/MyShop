@@ -48,13 +48,14 @@ def cart(request):
     items = ShoppingCart.objects.filter(user=request.user)
     cart = []
     cum_price = 0
-    
+    book_count = 0
     for item in items:
         cum_price = cum_price + (item.quantity * item.book.price)
+        book_count = book_count + item.quantity
         form = ShoppingCartForm({"user": item.user.id, "book": item.book.id, "quantity": item.quantity})
         cart.append({"item":item, "form": form})
 
-    data = {"cart": cart, "cum_price": cum_price}
+    data = {"cart": cart, "cum_price": cum_price, "book_count": book_count}
     return render(request, 'products/cart.html', data)
 
 def add_cart(request):
