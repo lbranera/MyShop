@@ -1,8 +1,11 @@
 import math
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from products.models import *
 from products.forms import *
 
@@ -40,6 +43,7 @@ def book(request,pk):
 
 # CART RELATED CONTROLLERS
 
+@login_required(login_url='/login')
 def cart(request):
     items = ShoppingCart.objects.filter(user=request.user)
     cart = []
