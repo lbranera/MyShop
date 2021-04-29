@@ -102,6 +102,30 @@
 					</table>
 				</div>
 			</div>
+
+			<br>
+			{% if comments is not None %}
+			<div class="card shadow">
+				<div class="card-header">
+					Ratings and Reviews on "{{book.title}}"
+				</div>
+				<div class="card-body">
+					<h1 class="card-title">{{overall_rating}}/5.0</h1>
+					
+					{% with ''|center:rating_floor as range %}
+					{% for _ in range %}
+						<i class="fas fa-star"></i>
+					{% endfor %}
+					{% endwith %}
+	
+					{% if rating_float %}
+						<i class="fas fa-star-half"></i>
+					{% endif %}
+					<p class="card-text">Out of five ratings.</p>
+				</div>
+			</div>
+			{% endif %}
+			
 		</div>
 	</div>  
 </div>
@@ -112,7 +136,7 @@
 {% if comments is not None %}
 <div class="container-fluid bg-light">
   	<br>
-  	<div class="container">
+  	<!-- <div class="container">
 		<div class="card shadow">
 			<div class="card-header">
 				Ratings and Reviews on "{{book.title}}"
@@ -134,7 +158,7 @@
 		</div>
   	</div>
 
-  	<br><br>
+  	<br><br> -->
 
   	<div class="container">
 		<hr>
