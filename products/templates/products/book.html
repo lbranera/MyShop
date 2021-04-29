@@ -1,7 +1,18 @@
 {% extends 'products/main.html' %}
 
 {% block content %}
-<br><br>
+
+<section class="text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-8 mx-auto">
+        <h1 class="fw-light">Buy this Book!</h1>
+        <p class="lead text-muted">For all of the bibliophiles out there, check out our rare and new collection of Filipiniana books and other 
+        collections under Anthropology, History, Journalism, Literature, Philosophy, Political Science, Psychology, and Sociology!</p>
+      </div>
+    </div>
+</section>
+
+
 <!-- Book Details Page -->
 <div class="container">
 	<div class="row">
@@ -150,9 +161,10 @@
 			<br>
     	{% endfor %}
   	</div>
-  	<br>
 </div>
 {% endif %}
+
+<br>
 
 <!-- Book Confirmation Modal -->
 

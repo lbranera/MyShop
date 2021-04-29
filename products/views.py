@@ -2,6 +2,7 @@ import math
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,7 +15,7 @@ from products.forms import *
 # BOOK RELATED CONTROLLERS
 
 def home(request):
-    books = Book.objects.all()
+    books = Book.objects.all().order_by('title')
     items = []
 
     for book in books:
@@ -45,7 +46,7 @@ def book(request,pk):
 
 @login_required(login_url='/login')
 def cart(request):
-    items = ShoppingCart.objects.filter(user=request.user)
+    items = ShoppingCart.objects.filter(user=request.user).order_by('id')
     cart = []
     cum_price = 0
     book_count = 0
@@ -58,12 +59,14 @@ def cart(request):
     data = {"cart": cart, "cum_price": cum_price, "book_count": book_count}
     return render(request, 'products/cart.html', data)
 
+@login_required(login_url='/login')
 def add_cart(request):
     form = ShoppingCartForm(request.POST)
     if( form.is_valid() ):
         form.save()
         return redirect("/cart")
 
+@login_required(login_url='/login')
 def update_cart(request, pk):
     single_cart = ShoppingCart.objects.get(id=pk)
     form = ShoppingCartForm(request.POST, instance=single_cart)
@@ -72,10 +75,27 @@ def update_cart(request, pk):
     
     return redirect("/cart")
 
+@login_required(login_url='/login')
 def remove_cart(request, pk):
     single_cart = ShoppingCart.objects.get(id=pk)
     single_cart.delete()
     return redirect("/cart")
+
+@login_required(login_url='/login')
+def checkout_cart(request):
+    subject = "MyShop Checkout Receipt"
+    message = "Than you for checking out with us!"
+    from_email = "lowrenzalmoro@gmail.com"
+    recipient_list = ["lbranera@up.edu.ph"]
+    send_mail(subject, message, from_email, recipient_list)
+    return redirect("/cart")
+
+@login_required(login_url='/login')
+def clear_cart(request):
+    ShoppingCart.objects.filter(user=request.user).delete()
+    return redirect("/cart")
+
+
 
 # USER AUTHENTICATION RELATED CONTROLLERS
 

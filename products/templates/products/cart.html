@@ -64,7 +64,7 @@
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-outline-success"> 
                                     <i class="fas fa-edit"></i> 
-                                    Edit
+                                    Edit Quantity
                                 </button>
                         
                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
@@ -147,10 +147,15 @@
                         <tr>
                             <td></td>
                             <td>
-                                <a href="#" type="button" class="btn btn-outline-dark">
+                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#checkout">
                                     <i class="fas fa-check-circle"></i>
                                     Checkout
-                                </a>
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#clear">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Clear Cart
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -158,10 +163,64 @@
             </div>
             <div class="col-sm-4"></div>
         </div>
-       
+    {% else %}
+        <br><br><br><br>
     {% endif %}
 
 </div>
+
+<!-- Checkout Cart Modal -->
+<div class="modal fade" id="checkout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Checkout Cart Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-start">
+            Are you sure you want to checkout all of the books in your cart?
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'checkout_cart' %}" type="button" class="btn btn-outline-success"> 
+                <i class="fas fa-check-circle"></i> 
+                Yes, I am sure
+            </a>
+    
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                <i class="fas fa-ban"></i> 
+                Cancel
+            </button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Clear Cart Modal -->
+<div class="modal fade" id="clear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Clear Cart Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-start">
+            Are you sure you want to remove all of the books in your cart?
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'clear_cart' %}" type="button" class="btn btn-outline-success"> 
+                <i class="fas fa-check-circle"></i> 
+                Yes, I am sure
+            </a>
+    
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                <i class="fas fa-ban"></i> 
+                Cancel
+            </button>
+        </div>
+    </div>
+    </div>
+</div>
+
 
 <br><br>
 {% endblock content %}
