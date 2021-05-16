@@ -2,13 +2,18 @@ import math
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from products.models import *
 from products.forms import *
+
+import os 
+from django.template.loader import get_template  
+from xhtml2pdf import pisa 
 
 # Create your views here.
 
@@ -84,10 +89,22 @@ def remove_cart(request, pk):
 @login_required(login_url='/login')
 def checkout_cart(request):
     subject = "MyShop Checkout Receipt"
-    message = "Than you for checking out with us!"
-    from_email = "lowrenzalmoro@gmail.com"
-    recipient_list = ["lbranera@up.edu.ph"]
-    send_mail(subject, message, from_email, recipient_list)
+    message = "Good Day! <br><br> Below is your Order Payment Slip. Due to a limited workforce in this period of quarantine, there may be delays in the processing of orders. <br> Thank you for your understanding."
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [request.user.email]
+    #send_mail(subject, message, from_email, recipient_list)
+    
+    email = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recipient_list,
+    )
+    email.content_subtype = 'html'
+    pdf = generate_pdf(request).getvalue()
+    email.attach("receipt.pdf", pdf, 'application/pdf')
+    email.send()
+
     return redirect("/cart")
 
 @login_required(login_url='/login')
@@ -133,3 +150,29 @@ def login_page(request):
 def logout_page(request):
     logout(request)
     return redirect('login')
+
+
+# PDF GENERATOR
+def generate_pdf(request):
+    template_path = 'products/receipt.html'
+    
+    items = ShoppingCart.objects.filter(user=request.user).order_by('id')
+    cart = []
+    cum_price = 0
+    book_count = 0
+    for item in items:
+        cum_price = cum_price + (item.quantity * item.book.price)
+        book_count = book_count + item.quantity
+        form = ShoppingCartForm({"user": item.user.id, "book": item.book.id, "quantity": item.quantity})
+        cart.append({"item":item, "form": form})
+
+    context = {"user": request.user, "cart": cart, "cum_price": cum_price, "book_count": book_count}
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="receipt.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+    pdf = pisa.CreatePDF(html, dest=response)
+    
+    if not pdf.err:
+        return response
