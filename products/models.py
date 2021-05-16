@@ -15,6 +15,7 @@ class Book(models.Model):
     language = models.CharField(max_length=50, null=True)
     pages = models.IntegerField(null=True)
     subtitle = models.CharField(max_length=500, null=True)
+    picture = models.ImageField(null=True, blank=True) 
     is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 

@@ -39,7 +39,7 @@ def book(request,pk):
         data = {'book': book } 
     
     form = ShoppingCartForm({"user": request.user.id, "book": book.id, "quantity": 1})
-    data["form"] = form            
+    data["form"] = form      
     return render(request, 'products/book.html', data)
 
 # CART RELATED CONTROLLERS

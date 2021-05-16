@@ -24,30 +24,34 @@
 				<div class="card-body">
 					<h5 class="card-title">{{book.title}}</h5>
 
-					<svg class="bd-placeholder-img card-img-top" width="100%" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="45%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-						
-						<br><br>
-						<p class="card-text"> 
-							<strong>Author:</strong> {{book.author}} <br> 
-							<strong>Price:</strong> Php {{book.price}} <br>
-							{% if book.is_available %}
-							<strong class="text-success">AVAILABLE</strong>
-							{% else %}
-							<strong class="text-danger">NOT AVAILABLE</strong>
-							{% endif %}
-						</p> 
+					{% if book.picture %}
+						<img  class="img-fluid" src={{book.picture.url}} >
+					{% else %}
+						<svg class="bd-placeholder-img card-img-top" width="100%" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="45%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					{% endif %}
 
-						{% if request.user.is_authenticated %}
-							<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
-								<i class="fas fa-cart-plus"></i> 
-								Add to Cart
-							</button>
+					<br><br>
+					<p class="card-text"> 
+						<strong>Author:</strong> {{book.author}} <br> 
+						<strong>Price:</strong> Php {{book.price}} <br>
+						{% if book.is_available %}
+						<strong class="text-success">AVAILABLE</strong>
 						{% else %}
-							<a href="{% url 'login' %}" type="button" class="btn btn-outline-dark"> 
-								<i class="fas fa-cart-plus"></i> 
-								Add to Cart
-							</a>
+						<strong class="text-danger">NOT AVAILABLE</strong>
 						{% endif %}
+					</p> 
+
+					{% if request.user.is_authenticated %}
+						<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if not book.is_available %} disabled {% endif %}> 
+							<i class="fas fa-cart-plus"></i> 
+							Add to Cart
+						</button>
+					{% else %}
+						<a href="{% url 'login' %}" type="button" class="btn btn-outline-dark"> 
+							<i class="fas fa-cart-plus"></i> 
+							Add to Cart
+						</a>
+					{% endif %}
 				</div>
 				<div class="card-footer text-muted">
 				Product added on {{book.date_created}}
