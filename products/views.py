@@ -114,7 +114,6 @@ def clear_cart(request):
     return redirect("/cart")
 
 
-
 # USER AUTHENTICATION RELATED CONTROLLERS
 
 def register(request):
@@ -154,6 +153,7 @@ def logout_page(request):
 
 
 # PDF GENERATOR
+
 @login_required(login_url='/login')
 def generate_pdf(request):
     template_path = 'products/receipt.html'
@@ -178,3 +178,7 @@ def generate_pdf(request):
     
     if not pdf.err:
         return response
+
+# ERROR 404 PAGE
+def error_404_view(request, exception):
+    return render(request, 'products/404.html')
