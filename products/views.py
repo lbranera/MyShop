@@ -100,6 +100,7 @@ def checkout_cart(request):
         from_email,
         recipient_list,
     )
+    
     email.content_subtype = 'html'
     pdf = generate_pdf(request).getvalue()
     email.attach("receipt.pdf", pdf, 'application/pdf')
@@ -153,6 +154,7 @@ def logout_page(request):
 
 
 # PDF GENERATOR
+@login_required(login_url='/login')
 def generate_pdf(request):
     template_path = 'products/receipt.html'
     
